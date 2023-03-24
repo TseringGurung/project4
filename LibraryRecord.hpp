@@ -10,17 +10,26 @@ class LibraryRecord : public ArrayBag<Book*>{
   public:
     LibraryRecord(); //default constructor
 
+    /**
+         * @param:  A refrence to a file name (string)
+         * @post:   will read the input file, where each line corresponds to a Book subclass and dynamically allocate Book-derived
+         *          objects with the information read from the input file and add them to the LibraryRecord.
+         * @note:   Input data will be in the following format:
+         *          title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
+        */
+    LibraryRecord(const std::string& input_file);
+
     /** @param:   A reference to a Book object to be checked in
       @return:  returns true if a book was successfully added to items, false otherwise
       @post:    adds book to items.
     **/
-	  bool checkIn(const Book* new_entry);
+	  bool checkIn(Book* new_entry);
     
     /** @param:   A reference to a Book object to be checked out   
         @return:  returns true if a book was successfully removed from items_, false otherwise
         @post:    removes the book from the LibraryRecord and if remove was successful, it adds the book to the check_out_history_ vector.
     **/
-	  bool checkOut(const Book* an_entry);
+	  bool checkOut(Book* an_entry);
 
     /**
       @param:   A reference to a Book object
@@ -63,7 +72,7 @@ class LibraryRecord : public ArrayBag<Book*>{
       @return: True or false depending on whether or not an item was removed
       @post: remove all elements of that book
     */
-    bool removeStock(const Book* an_entry);
+    bool removeStock(Book* an_entry);
 
     /**
       @param:   A reference to another LibraryRecord
@@ -93,13 +102,16 @@ class LibraryRecord : public ArrayBag<Book*>{
     */
     void operator+=(LibraryRecord& a_library_record);
 
+     /**
+         * @param:  refrence to a key (string)
+         * @post:   displays information of its holdings whenever they key matches the relevant 
+         *          information (specific to the type of book).
+        */
     void dispalyFilter(const std::string &key);
-
-    LibraryRecord(std::string& input_file);
 
   protected:
    
-    std::vector<Book> check_out_history_; //a list of all the items that have been checked out
+    std::vector<Book*> check_out_history_; //a list of all the items that have been checked out
 
  
 };
