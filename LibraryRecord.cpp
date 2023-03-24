@@ -1,5 +1,7 @@
 #include "LibraryRecord.hpp"
-
+#include "Textbook.hpp"
+#include "Manual.hpp"
+#include "Novel.hpp"
 
 /** default constructor**/
 LibraryRecord::LibraryRecord() : ArrayBag<Book*>()
@@ -10,8 +12,8 @@ LibraryRecord::LibraryRecord() : ArrayBag<Book*>()
 Implement a parameterized constructor that takes the name of the input file as a reference to string argument. 
 The constructor will read the input file, where each line corresponds to a Book subclass and 
 dynamically allocate Book-derived objects with the information read from the input file and add them to the LibraryRecord. */
-LibraryRecord::LibraryRecord(std::string& input_file) : ArrayBag<Book*>(){
-
+LibraryRecord::LibraryRecord(const std::string& input_file){
+  
 }
 
 
@@ -22,16 +24,11 @@ LibraryRecord::LibraryRecord(std::string& input_file) : ArrayBag<Book*>(){
     @return:  returns true if a book was successfully added to items, false otherwise
     @post:    adds book to items.
  **/
-bool LibraryRecord::checkIn(const Book* new_entry)
+bool LibraryRecord::checkIn(Book* new_entry)
 {
-  bool has_room = (item_count_ < DEFAULT_CAPACITY);
-  if (has_room)
-  {
-    items_[item_count_] = new_entry;
-    item_count_++;
+  if(add(new_entry)){
     return true;
-  } // end if
-
+  }
   return false;
 }
 
@@ -39,18 +36,13 @@ bool LibraryRecord::checkIn(const Book* new_entry)
     @return:  returns true if a book was successfully removed from items_, false otherwise
     @post:    removes the book from the LibraryRecord and if remove was successful, it adds the book to the check_out_history_ vector.
  **/
-bool LibraryRecord::checkOut(const Book* an_entry)
+bool LibraryRecord::checkOut(Book* an_entry)
 {
-  int found_index = getIndexOf(an_entry);
-  bool can_remove = !isEmpty() && (found_index > -1);
-  if (can_remove)
-  {
-    item_count_--;
-    items_[found_index] = items_[item_count_];
-    check_out_history_.push_back(*an_entry);
+  if(remove(an_entry)) {
+      check_out_history_.push_back(an_entry);
+      return true;
   }
-
-  return can_remove;
+  return false;
 }
 
 /**
@@ -65,7 +57,7 @@ void LibraryRecord::display()
   for (int i = 0; i < item_count_; i++)
   {
     int count = getCheckOutHistory(items_[i]);
-    items_[i].display();
+    items_[i]->display();
     std::cout << "It has been checked out " << count << " times." << std::endl;
   }
 }
@@ -75,9 +67,7 @@ void LibraryRecord::display()
 
 void LibraryRecord::dispalyFilter(const std::string &key){
   for(int i = 0; i < item_count_; i++){
-    if(items_[i] == key){
-
-    }
+    items_[i]->displayFilter(key);
   }
 } 
 
@@ -92,11 +82,11 @@ void LibraryRecord::displayTitles()
   {
     if (i < item_count_ - 1)
     {
-      std::cout << items_[i].getTitle() << ", ";
+      std::cout << items_[i]->getTitle() << ", ";
     }
     else
     {
-      std::cout << items_[i].getTitle() << "!\n";
+      std::cout << items_[i]->getTitle() << "!\n";
     }
   }
 }
@@ -231,20 +221,10 @@ bool LibraryRecord::duplicateStock()
   @return: True or false depending on whether or not an item was removed
   @post: remove all elements of that book
 */
-bool LibraryRecord::removeStock(const Book* an_entry)
+bool LibraryRecord::removeStock(Book* an_entry)
 {
-  bool res = false;
-  while (contains(an_entry))
-  {
-    int found_index = getIndexOf(an_entry);
-    item_count_--;
-    for (int i = found_index; i < item_count_; i++)
-    {
-      items_[i] = items_[i + 1];
-    }
-    res = true;
-  }
-  return res;
+  while(remove(an_entry));
+  return true;
 }
 
 /**
