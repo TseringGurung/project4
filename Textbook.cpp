@@ -125,8 +125,8 @@ Example:
 Calculus: Early Transcendentals written by James Stewart for COLLEGE students. Subject: mathematics. It has review questions. Page Count: 867. It is available digitally.
 */ 
 void Textbook::display(){
-  std::cout << getTitle() << " is written by " << getAuthor() << " for " << grade_level_ << "students. Subject: " << subject_ << ". ";
-  if(has_review_questions_){
+  std::cout << getTitle() << " is written by " << getAuthor() << " for " << getGradeLevel() << "students. Subject: " << getSubject() << ". ";
+  if(checkReviewQuestions()){
     std::cout << "It has";
   }
   else{
