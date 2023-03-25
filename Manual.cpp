@@ -7,12 +7,12 @@
 
 
 /**
-  Default constructor. 
+  Default constructor.
   Default-initializes all private members. 
   Booleans are default-initialized to False
 */
-Manual::Manual(): website_{""}, device_{""}, has_visual_aid_{false}, has_website_{false}
-{    
+Manual::Manual(): has_website_{false}, has_visual_aid_{false}, website_{""}, device_{""}
+{	
 }
 
 /**
@@ -36,9 +36,10 @@ Manual::Manual(): website_{""}, device_{""}, has_visual_aid_{false}, has_website
                 If the URL is ill-formatted, the website is set to 
                 empty string and the website flag is set to False.
 */
-Manual::Manual(std::string name, std::string author, int page_count, std::string model, bool is_digital, std::string url, bool aid) : Book(name, author, page_count, is_digital), device_{model}, has_visual_aid_{aid}
+Manual::Manual(std::string name, std::string author, int page_count, std::string model, bool is_digital, std::string url, bool aid) : Book(name, author, page_count, is_digital), has_visual_aid_{aid}, device_{model}
 {
-  const std::regex pattern("((http|https)://)(www.)[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");  
+  const std::regex pattern("((http|https)://)(www.)[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+
   // If website in invalid, set website_ to empty string and set has_website_ to false
   // ** Differs from setWebsite instructions
   if (regex_match(url,pattern)) {
@@ -103,7 +104,6 @@ bool Manual::setWebsite(const std::string& site)
   }
   else {
     website_ = "Broken Link";
-
   }
 
   has_website_ = true;
@@ -132,26 +132,37 @@ void Manual::setVisualAid(const bool& aid)
 
 /**
   @post     : displays Manual data in the form:
-  "[title_] is written by [author_] company for device: [device_]. Website: [website_ / Broken Link / NONE]. Page Count: [page_count_]. [It is / It is not] available digitally.\n"  
-**/
-void Manual::display()
-{
-  std::string website = "NONE";
-  if (has_website_){
-    website = getWebsite();
-  }
+  "[title_] is written by [author] company for device: [device]. Website: [website / NONE]. Page Count: [page_count_]. [It is / It is not] available digitally.\n"  
+
+Example:
+All Freezer with IQ-Touch Owner Guide is written by ElectroLux company for device: Refrigerator. Website: https://www.electroluxappliances.com/. Page Count: 67. It is available digitally.*/
   
-  std::cout << getTitle() << " is written by " << getAuthor() << " company for device: " <<  device_ << ". Website: " << website << ". Page Count: " << getPageCount() << ". " << (isDigital() ? "It is" : "It is not") << " available digitally.\n";
-}
+void Manual::display(){
+  std::string web = "";
+  if(has_website_ == 0){
+    web = "NONE";
+  }
+  else{
+    web = getWebsite();
+  }
+  std::cout << getTitle() << " is written by " << getAuthor() << " company for device: " << device_ << ". Website: " << web << ". Page Count: " << getPageCount() << ". "; 
+  if(isDigital()){
+    std::cout << "It is";
+  }
+  else{
+    std::cout << "It is not";
+  }
+  std::cout << " available digitally.\n";
+  }
 
 /**
   @param    : a reference to a string key to match the device of the Manual
   @post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
 */
-void Manual::displayFilter(const std::string& key)
-{
-  if (key == device_.substr(0, device_.find("-")))
-  {
-    display();
-  }
+void Manual::displayFilter(const std::string& Manual_device_key){
+    if(Manual_device_key == device_.substr(0,device_.find("-"))){
+      display();
+    }
 }
+
+  /*- IMPORTANT: the device field in the input file contains both the device type and model (e.g. "Refrigerator-EI32AF80QS"). The device key here will only match the type (e.g, "Refrigerator", the string before the "-"), not the model number. */
