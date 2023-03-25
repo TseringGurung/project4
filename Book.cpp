@@ -86,13 +86,20 @@ void Book::setDigital(){
   is_digital_ = true;
 }
 
+
 /**
 		@param     : A reference to the right hand side of the == operator.
 		@return     : Returns true if the right hand side book is the identical, false otherwise.
 
 		Note: ALL attributes must be equal for two books to be deemed equal.
+
+			Example: In order for book1 to be == to book 2 we must have:
+			- The same title
+			- The same author
+			- The same page count
+			- They must either be both digital or both not
 	*/
-bool Book::operator==(const Book& rhs) const // Comparison operator overload
+bool Book::operator==(const Book& rhs) const 
 {
   bool titleEq = rhs.getTitle() == title_;
   bool authorEq = rhs.getAuthor() == author_;
@@ -108,7 +115,7 @@ bool Book::operator==(const Book& rhs) const // Comparison operator overload
 
 			Note: ALL attributes must be equal for two books to be deemed equal.
 	*/
-bool Book::operator!=(const Book& rhs) const // Comparison operator overload
+bool Book::operator!=(const Book& rhs) const 
 {
   bool titleEq = rhs.getTitle() != title_;
   bool authorEq = rhs.getAuthor() != author_;
