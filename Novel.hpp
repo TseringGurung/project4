@@ -14,7 +14,7 @@ class Novel : public Book
 {
   public:
     /**
-    Default constructor.
+    Default constructor. 
     Default-initializes all private members. 
     */
     Novel();  
@@ -106,22 +106,21 @@ class Novel : public Book
               computes the average to set value of the average_rating_
               private member
     **/                    
-    void calculateAverageRating();    
-    
+    void calculateAverageRating(); 
 
     /**
     @post     : displays Novel data in the form:
-    "[title_] is written by [author_]. Genre: [genre]. [It has/ It does not have] a film adaptation. Page Count: [page_count_]. [It is / It is not] available digitally.\n"
-    Example:
-    Enders Game is written by Orson Scott Card. Genre: science fiction. It has a film adaptation. Page Count: 324. It is not available digitally.      
+                "[title_] is written by [author_]. Genre: [genre_]. [It has/ It does not have] 
+                a film adaptation. Page Count: [page_count_]. [It is / It is not] available digitally.\n"     
     */
-    void display() override;
+   void display() override;
 
-    /**
+   /**
     @param    : a reference to a string key to match the genre of the Novel
     @post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
-    */
-    void displayFilter(const std::string& genre_novel_key) override;
+  */
+   void displayFilter(const std::string& key) override;
+    
                                 
 
   private:
