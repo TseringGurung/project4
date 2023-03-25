@@ -1,6 +1,8 @@
 //Tsering Gurung
-//CS 235
+//3/24/23
+//LibraryRecord.hpp
 //Project 4: Polymorphism
+
 #ifndef LIBRARY_RECORD_
 #define LIBRARY_RECORD_
 
@@ -75,7 +77,7 @@ class LibraryRecord : public ArrayBag<Book>{
       @return: True or false depending on whether or not an item was removed
       @post: remove all elements of that book
     */
-    bool removeStock(Book* an_entry) ;
+    bool removeStock(Book* an_entry);
 
     /**
       @param:   A reference to another LibraryRecord
