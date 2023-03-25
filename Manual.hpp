@@ -1,3 +1,6 @@
+//Tsering Gurung
+//CS 235
+//Project 4: Polymorphism
 #ifndef MANUAL_HPP_
 #define MANUAL_HPP_
 
