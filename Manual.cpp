@@ -133,7 +133,7 @@ void Manual::setVisualAid(const bool& aid)
 Example:
 All Freezer with IQ-Touch Owner Guide is written by ElectroLux company for device: Refrigerator. Website: https://www.electroluxappliances.com/. Page Count: 67. It is available digitally.*/
   
-void Manual::display() const{
+void Manual::display(){
   std::string web = "";
   if(has_website_ == 0){
     web = "NONE";
@@ -155,7 +155,7 @@ void Manual::display() const{
   @param    : a reference to a string key to match the device of the Manual
   @post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
 */
-void Manual::displayFilter(const std::string& Manual_device_key) const{
+void Manual::displayFilter(const std::string& Manual_device_key){
     if(Manual_device_key == device_.substr(0,device_.find('-'))){
       display();
     }
