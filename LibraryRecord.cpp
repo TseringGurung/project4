@@ -1,3 +1,7 @@
+//Tsering Gurung
+//CS 235
+//Project 4: Polymorphism
+//LibraryRecord.cpp
 #include "LibraryRecord.hpp"
 
 
