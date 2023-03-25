@@ -99,7 +99,7 @@ class Book{
 	"[title_] is written by [author_]. Page Count: [page_count_]. [It is / It is not] available digitally.\n"     
 	*/
 	/*make the display() function pure virtual*/
-	virtual void display() const = 0;
+	virtual void display() = 0;
 
 	
 	/*add the following function and make it is also pure virtual
@@ -107,7 +107,7 @@ class Book{
   	@param:  A reference to a string key
     @post:   Display book data if key argument matches (key match will be subclass specific) 
   	*/
-  	virtual void displayFilter(const std::string& key) const = 0;
+  	virtual void displayFilter(const std::string& key) = 0;
 
 	private:
 	std::string title_; // The title of the book (a string)
