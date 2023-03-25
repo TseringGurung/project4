@@ -3,26 +3,28 @@
 //LibraryRecord.hpp
 //Project 4: Polymorphism
 
+
 #ifndef LIBRARY_RECORD_
 #define LIBRARY_RECORD_
 
 #include "ArrayBag.hpp"
 #include "Book.hpp"
-#include "Novel.hpp"
-#include "Manual.hpp"
-#include "Textbook.hpp"
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <string>
 
-class LibraryRecord : public ArrayBag<Book>{
+class LibraryRecord : public ArrayBag<Book*>{
   public:
     LibraryRecord(); //default constructor
 
-    /** Parameterized constructor that reads in file*/
-    LibraryRecord(const std::string fileName);
+    /**
+         * @param:  A refrence to a file name (string)
+         * @post:   will read the input file, where each line corresponds to a Book subclass and dynamically allocate Book-derived
+         *          objects with the information read from the input file and add them to the LibraryRecord.
+         * @note:   Input data will be in the following format:
+         *          title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
+        */
+    LibraryRecord(const std::string& input_file);
 
     /** @param:   A reference to a Book object to be checked in
       @return:  returns true if a book was successfully added to items, false otherwise
@@ -37,7 +39,7 @@ class LibraryRecord : public ArrayBag<Book>{
 	  bool checkOut(Book* an_entry);
 
     /**
-      @param:   A reference to a Book object 
+      @param:   A reference to a Book object
       @return:  The number of times (int) the referenced Book has been checked out
     */
     int getCheckOutHistory(Book* an_entry);
@@ -107,12 +109,12 @@ class LibraryRecord : public ArrayBag<Book>{
     */
     void operator+=(LibraryRecord& a_library_record);
 
-    /**
-        @param    : a reference to a string key to match the book type
-        @post     : calls display() for the specific book type   
-    */
-   void displayFilter(const std::string &key);
-
+     /**
+         * @param:  refrence to a key (string)
+         * @post:   displays information of its holdings whenever they key matches the relevant 
+         *          information (specific to the type of book).
+        */
+    void displayFilter(const std::string &key);
 
   protected:
    
