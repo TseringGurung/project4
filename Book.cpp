@@ -1,3 +1,6 @@
+//Tsering Gurung
+//CS 235
+//Project 4: Polymorphism
 #include "Book.hpp"
 
 Book::Book(const std::string& title, const std::string& author, const int& page_count, const bool& is_digital) : 
