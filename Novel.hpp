@@ -25,7 +25,7 @@ class Novel : public Book {
          * Default constructor.
          * Default-initializes all private members.
         */
-        Novel()=default;
+        Novel();
 
         /**
          * Parameterized constructor.
@@ -38,7 +38,8 @@ class Novel : public Book {
          * @param     : A flag indicating whether there is a film adaptation
          *              for this novel with DEFAULT VALUE False (a Boolean)
         */
-        Novel(std::string title, std::string author, int page_count, std::string genre, bool is_digital=false, bool has_film=false);
+        
+        Novel(std::string title, std::string author, int page_count, std::string genre, bool is_digital = false, bool has_film = false);
 
         /**
          * @return   : the value of the genre private member
@@ -62,13 +63,14 @@ class Novel : public Book {
          *              and separated by a space " " .
          *              For example: "character1 character2 character3"
         */
-        std::string getCharacterListString() const;
+        std::string getCharacterListString();
 
         /**
          * @param  : a string indicating a character
          * @post   : inserts the character into the character_list_ vector
         */
-        void addCharacter(const std::string& character);
+        
+        void addCharacter(const std::string &character);
 
         /**
          * @return   : the value of the film_adaptation_ private member
@@ -86,13 +88,13 @@ class Novel : public Book {
         double getAverageRating() const;
 
         /**
-         * @param    : a floating point number (double) indicating
-         *              the score of the  review
-         * @param    : a string indicating the rating of the review
-         * @return   : creates and returns a review data type with
-         *              score and rating as indicated by the parameters
-        */
-        review createReview(const double& score, const std::string& rating) const;
+    @param    : a floating point number (double) indicating 
+                the score of the  review
+    @param    : a string indicating the rating of the review
+    @return   : creates and returns a review data type with 
+                score and rating as indicated by the parameters
+    */                   
+    review createReview(const double& score, const std::string& rating); 
 
         /**
          * @param  : a review object
