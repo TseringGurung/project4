@@ -115,13 +115,13 @@ class Novel : public Book
     Example:
     Enders Game is written by Orson Scott Card. Genre: science fiction. It has a film adaptation. Page Count: 324. It is not available digitally.      
     */
-    void display() const;
+    void display() override;
 
     /**
     @param    : a reference to a string key to match the genre of the Novel
     @post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
     */
-    void diplayFilter(const std::string& genre_novel_key) const;
+    void diplayFilter(const std::string& genre_novel_key) override;
                                 
 
   private:
