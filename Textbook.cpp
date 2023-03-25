@@ -87,6 +87,22 @@ std::string Textbook::getGradeLevel() const
   }
 }
 
+grade_level stringGrade(const std::string& input) {
+    if(input == "ELEMENTARY"){
+      return ELEMENTARY;
+    }
+    if(input == "JUNIOR_HIGH"){
+      return JUNIOR_HIGH;
+    }  
+    if(input == "HIGH_SCHOOL"){
+      return HIGH_SCHOOL;
+    }  
+    if(input == "COLLEGE"){
+      return COLLEGE;
+    }      
+    return NONE;
+}
+
 /**
   @post   : sets the review question flag to True
 **/
@@ -108,7 +124,7 @@ bool Textbook::checkReviewQuestions() const
 Example:
 Calculus: Early Transcendentals written by James Stewart for COLLEGE students. Subject: mathematics. It has review questions. Page Count: 867. It is available digitally.
 */ 
-void Textbook::display() const{
+void Textbook::display(){
   std::cout << getTitle() << " is written by " << getAuthor() << " for " << grade_level_ << "students. Subject: " << subject_ << ". ";
   if(has_review_questions_){
     std::cout << "It has";
@@ -130,8 +146,8 @@ void Textbook::display() const{
   @param    : a reference to a string key to match the subject of the Textbook
   @post     : calls display() if the key argument is equal to subject_ (e.g. "mathematics")   
 */
-void Textbook::displayFilter(const std::string& textbook_subject_key) const{
-  if(textbook_subject_key == subject_){
+void Textbook::displayFilter(const std::string& textbook_subject_key){
+  if(textbook_subject_key == getSubject()){
     display();
   }
 }
