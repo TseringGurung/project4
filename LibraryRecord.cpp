@@ -1,7 +1,8 @@
 //Tsering Gurung
-//CS 235
-//Project 4: Polymorphism
+//3/24/23
 //LibraryRecord.cpp
+//Project 4: Polymorphism
+
 #include "LibraryRecord.hpp"
 
 
@@ -100,11 +101,7 @@ bool LibraryRecord::checkIn(Book* new_entry)
  **/
 bool LibraryRecord::checkOut(Book* an_entry)
 {
-  if (an_entry == nullptr) {
-    // handle null pointer error
-    return false;
-  }
-  int found_index = getIndexOf(*an_entry);
+  int found_index = getIndexOf(an_entry);
   bool can_remove = !isEmpty() && (found_index > -1);
   if (can_remove)
   {
@@ -191,7 +188,7 @@ void LibraryRecord::operator/=(LibraryRecord& a_library_record)
     {
       break;
     }
-    if (contains(*a_library_record.items_[index]))
+    if (contains(a_library_record.items_[index]))
     {
       break;
     }
@@ -286,9 +283,9 @@ bool LibraryRecord::duplicateStock()
 bool LibraryRecord::removeStock(Book* an_entry)
 {
   bool res = false;
-  while (contains(*an_entry))
+  while (contains(an_entry))
   {
-    int found_index = getIndexOf(*an_entry);
+    int found_index = getIndexOf(an_entry);
     item_count_--;
     for (int i = found_index; i < item_count_; i++)
     {
@@ -313,7 +310,7 @@ bool LibraryRecord::equivalentRecords(LibraryRecord& a_library_record)
   // use copy because should not modify items_
   std::vector<Book*> library_copy = toVector();
   std::vector<Book*> other_copy = a_library_record.toVector();
-  Book* empty = nullptr;
+  Book* empty;
 
   for (int i = 0; i < library_copy.size(); i++)
   {
