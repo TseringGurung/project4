@@ -4,9 +4,7 @@
 #include "Novel.hpp"
 
 /** default constructor**/
-LibraryRecord::LibraryRecord() : ArrayBag<Book>()
-{
-}
+LibraryRecord::LibraryRecord() : ArrayBag<Book*>() {}
 
 /* parameterized constructor
 Implement a parameterized constructor that takes the name of the input file as a reference to string argument. 
@@ -20,7 +18,8 @@ Textbook (represented by 2)
 Manual (represented by 3)
 
 */
-LibraryRecord::LibraryRecord(const std::string input_file){
+LibraryRecord::LibraryRecord(const std::string& input_file){
+  item_count_ = 0;
   std::string type, title_file, author_file, page_count_file, is_digital_file, genre_file, subject_file, grade_level_file, has_film_file, has_review_file, device_model_file, website_file, book_type_file;
   std::ifstream book_file(input_file);
   if(!book_file.is_open()){
@@ -64,15 +63,7 @@ LibraryRecord::LibraryRecord(const std::string input_file){
  **/
 bool LibraryRecord::checkIn(Book* new_entry)
 {
-  bool has_room = (item_count_ < DEFAULT_CAPACITY);
-  if (has_room)
-  {
-    items_[item_count_] = new_entry;
-    item_count_++;
-    return true;
-  } // end if
-
-  return false;
+  return add(new_entry);
 }
 
 /** @param:   A reference to a Book object to be checked out   
@@ -81,16 +72,11 @@ bool LibraryRecord::checkIn(Book* new_entry)
  **/
 bool LibraryRecord::checkOut(Book* an_entry)
 {
-  int found_index = getIndexOf(an_entry);
-  bool can_remove = !isEmpty() && (found_index > -1);
-  if (can_remove)
-  {
-    item_count_--;
-    items_[found_index] = items_[item_count_];
-    check_out_history_.push_back(an_entry);
-  }
-
-  return can_remove;
+  if(remove(an_entry)) {
+        check_out_history_.push_back(an_entry);
+        return true;
+    }
+    return false;
 }
 
 /**
