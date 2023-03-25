@@ -1,3 +1,6 @@
+//Tsering Gurung
+//CS 235
+//Project 4: Polymorphism
 #ifndef LIBRARY_RECORD_
 #define LIBRARY_RECORD_
 
