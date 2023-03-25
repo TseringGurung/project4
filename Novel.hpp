@@ -121,7 +121,7 @@ class Novel : public Book
     @param    : a reference to a string key to match the genre of the Novel
     @post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
     */
-    void diplayFilter(const std::string& genre_novel_key) override;
+    void displayFilter(const std::string& genre_novel_key) override;
                                 
 
   private:
