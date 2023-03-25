@@ -141,7 +141,7 @@ void Manual::display(){
   else{
     web = getWebsite();
   }
-  std::cout << getTitle() << " is written by " << getAuthor() << " company for device: " << getDevice() << ". Website: " << web << ". Page Count: " << getPageCount() << ". "; 
+  std::cout << getTitle() << " is written by " << getAuthor() << " company for device: " << device_ << ". Website: " << web << ". Page Count: " << getPageCount() << ". "; 
   if(isDigital()){
     std::cout << "It is";
   }
