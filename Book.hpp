@@ -1,9 +1,3 @@
-#ifndef BOOK_HPP_
-#define BOOK_HPP_
-
-#include <string>
-#include <iostream>
-
 
 #ifndef BOOK_HPP_
 #define BOOK_HPP_
@@ -78,6 +72,7 @@ class Book{
 		*/
 		void setDigital();
 
+	//addition to project 3
 	
 	/**
 		@param     : A reference to the right hand side of the == operator.
@@ -91,7 +86,7 @@ class Book{
 			- The same page count
 			- They must either be both digital or both not
 	*/
-    bool operator==(const Book& rhs) const;
+    bool operator==(const Book& rhs) const; // Comparison operator overload
 
 
 
@@ -101,7 +96,7 @@ class Book{
 
 			Note: ALL attributes must be equal for two books to be deemed equal.
 	*/
-    bool operator!=(const Book& rhs) const; 
+    bool operator!=(const Book& rhs) const; // Comparison operator overload
     
 
     /**
