@@ -13,7 +13,7 @@ enum grade_level
   COLLEGE
 };
 
-grade_level stringGrade(const std::string& input);
+
 
 class Textbook : public Book
 {
@@ -39,7 +39,7 @@ class Textbook : public Book
       @post      : The private members are set to the values of the 
                   corresponding parameters.
     */
-    Textbook(std::string name, std::string author, int page_count, std::string subject, bool is_digital = false, grade_level grade = NONE, bool has_review = false); 
+    Textbook(const std::string& name, const std::string& author, int page_count, const std::string& subject, bool is_digital = false, grade_level grade = NONE, bool has_review = false);
 
     /**
       @return  : the subject of the textbook
@@ -76,18 +76,17 @@ class Textbook : public Book
     void setReviewQuestions(); //set has_review_questions_ to true
 
     /**
-    @post     : displays Textbook data in the form:
-    "[title_] is written by [author_] for [grade_level] students. Subject: [subject]. [It has/ It does not have] review questions. Page Count: [page_count_]. [It is / It is not] available digitally.\n" 
-    Example:
-    Calculus: Early Transcendentals written by James Stewart for COLLEGE students. Subject: mathematics. It has review questions. Page Count: 867. It is available digitally.
+      @post     : displays Textbook data in the form:
+              "[title_] is written by [author_] for [grade_level_] students. 
+              Subject: [subject_]. [It has/ It does not have] review questions. Page Count: [page_count_]. [It is / It is not] available digitally.\n" 
     */ 
     void display() override;
 
     /**
-    @param    : a reference to a string key to match the subject of the Textbook
-    @post     : calls display() if the key argument is equal to subject_ (e.g. "mathematics")   
+      @param    : a reference to a string key to match the subject of the Textbook
+      @post     : calls display() if the key argument is equal to subject_ (e.g. "mathematics")   
     */
-    void displayFilter(const std::string& textbook_subject_key) override;
+    void displayFilter(const std::string &key) override;
 
   private:
     std::string subject_; // a string the represents the subject of the book
