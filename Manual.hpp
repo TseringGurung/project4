@@ -97,13 +97,13 @@ Manual();
   Example:
   All Freezer with IQ-Touch Owner Guide is written by ElectroLux company for device: Refrigerator. Website: https://www.electroluxappliances.com/. Page Count: 67. It is available digitally.*/
   
-  void display() const;
+  virtual void display() override;
 
   /**
   @param    : a reference to a string key to match the device of the Manual
   @post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
   */
-  void displayFilter(const std::string& Manual_device_key) const;
+  virtual void displayFilter(const std::string& Manual_device_key) override;
 
   /*- IMPORTANT: the device field in the input file contains both the device type and model (e.g. "Refrigerator-EI32AF80QS"). The device key here will only match the type (e.g, "Refrigerator", the string before the "-"), not the model number. */
 
