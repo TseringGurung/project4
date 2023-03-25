@@ -42,7 +42,6 @@ int Book::getPageCount() const{
   return page_count_;
 }
 
-
 /**
   @return : true if the book is available in digital form, false otherwise
 
@@ -87,8 +86,6 @@ void Book::setDigital(){
   is_digital_ = true;
 }
 
-
-//additions to project 3
 /**
 		@param     : A reference to the right hand side of the == operator.
 		@return     : Returns true if the right hand side book is the identical, false otherwise.
@@ -111,7 +108,6 @@ bool Book::operator==(const Book& rhs) const // Comparison operator overload
   return result;
 }
 
-//additions to project 3
 /**
 		@param     : A reference to the right hand side of the != operator.
 		@return     : Returns true if the right hand side book is NOT identical (!=), false otherwise.
@@ -127,4 +123,3 @@ bool Book::operator!=(const Book& rhs) const // Comparison operator overload
   bool result = titleEq || page_countEq || authorEq || is_digitalEQ;
   return result;
 }
-
