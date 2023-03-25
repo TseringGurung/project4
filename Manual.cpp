@@ -1,116 +1,152 @@
-
-#ifndef MANUAL_HPP_
-#define MANUAL_HPP_
-#include "Book.hpp"
-#include <regex>
-
-
-class Manual : public Book
-{
-  public:
+#include "Manual.hpp"
 
 
 /**
-  Default constructor.
+  Default constructor. 
   Default-initializes all private members. 
   Booleans are default-initialized to False
 */
-Manual();
+Manual::Manual(): website_{""}, device_{""}, has_visual_aid_{false}, has_website_{false}
+{    
+}
 
+/**
+  Parameterized constructor.
+  @param     : The title of the book (a string)
+  @param     : The author of the book (a string)
+  @param     : The number of pages in the book (a positive integer)
+  @param     : A flag indicating whether the book is in digital form 
+                with DEFAULT VALUE False (a Boolean)
+  @param     : The name of the device (a string)
+  @param     : The URL that is in the format 
+                'https://www.something.something' 
+                or 'http://www.something.something' 
+                with the last 'something' being at least 2 characters 
+                with DEFAULT VALUE empty string (a string)
+  @param     : A Boolean indicating the presence of a visual aid 
+                with DEFAULT VALUE False
+  @post      : The private members are set to the values of the 
+                corresponding parameters. 
+                If a URL is provided, the website flag is set to True.
+                If the URL is ill-formatted, the website is set to 
+                empty string and the website flag is set to False.
+*/
+Manual::Manual(std::string name, std::string author, int page_count, std::string model, bool is_digital, std::string url, bool aid) : Book(name, author, page_count, is_digital), device_{model}, has_visual_aid_{aid}
+{
+  const std::regex pattern("((http|https)://)(www.)[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");  
+  // If website in invalid, set website_ to empty string and set has_website_ to false
+  // ** Differs from setWebsite instructions
+  if (regex_match(url,pattern)) {
+    website_ = url;
+    has_website_ = true;
+  }
+  else {
+    website_ = "";
+    has_website_ = false;
+  }
+}
 
-     /**
-    Parameterized constructor.
-    @param     : The title of the book (a string)
-    @param     : The author of the book (a string)
-    @param     : The number of pages in the book (a positive integer)
-    @param     : A flag indicating whether the book is in digital form 
-                 with DEFAULT VALUE False (a Boolean)
-    @param     : The name of the device (a string)
-    @param     : The URL that is in the format 
-                 'https://www.something.something' 
-                 or 'http://www.something.something' 
-                 with the last 'something' being at least 2 characters 
-                 with DEFAULT VALUE empty string (a string)
-    @param     : A Boolean indicating the presence of a visual aid 
-                 with DEFAULT VALUE False
-    @post      : The private members are set to the values of the 
-                 corresponding parameters. 
-                 If a URL is provided, the website flag is set to True.
-                 If the URL is ill-formatted, the website is set to 
-                 empty string and the website flag is set to False.
-    */
-    Manual(std::string name, std::string author, int page_count, std::string model, bool is_digital = false, std::string url = "", bool aid = false);
+/**
+  @return  : the variable indicating the device the manual is for
+**/
+std::string Manual::getDevice() const
+{
+  return device_;
+}
 
-      /**
-    @param  : a reference to a string representing the device
-    @post   : sets the private member variable to the value of the parameter
-    **/
-    void setDevice(const std::string& model);
+/**
+  @return  : the url for the website
+**/
+std::string Manual::getWebsite() const
+{
+  return website_;
+}
 
+/**
+  @return  : the visual aid flag
+**/
+bool Manual::hasVisualAid() const
+{
+  return has_visual_aid_;
+}
 
-    /**
-    @return  : the variable indicating the device the manual is for
-    **/
-    std::string getDevice() const; 
+/**
+  @return  : the has website flag
+**/
+bool Manual::hasWebsite() const
+{
+  return has_website_;
+}
 
-      /**
-    @param   : a reference to a website link (string) that is in the format 
-              'https://www.something.something' 
-              or 'http://www.something.something' 
-              with the last 'something' being at least 2 characters
-    @return  : has_website_ flag (a boolean)
-    @post    : If the link is not correctly formatted, 
-              store "Broken Link" in the link member variable (see <regex>) 
-              and either way set the has website flag to True
-    **/
-    bool setWebsite(const std::string& site);
+/**
+  @param   : a reference to a website link (string) that is in the format 
+             'https://www.something.something' 
+             or 'http://www.something.something' 
+             with the last 'something' being at least 2 characters
+  @return  : has_website_ flag (a boolean)
+  @post    : If the link is not correctly formatted, 
+             store "Broken Link" in the link member variable (see <regex>) 
+             and either way set the has website flag to True
+**/
+// (** Differs from parameterized constructor)
+bool Manual::setWebsite(const std::string& site)
+{
+  const std::regex pattern("((http|https)://)(www.)[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+  
+  if (regex_match(site,pattern)) {
+    website_ = site;
+  }
+  else {
+    website_ = "Broken Link";
 
+  }
 
-    /**
-    @return  : the url for the website
-    **/
-    std::string getWebsite() const; 
-    
+  has_website_ = true;
 
-     /**
-    @return  : the visual aid flag
-    **/
-    void setVisualAid(const bool& aid); 
+  return has_website_;
+} 
 
+/**
+  @param  : a reference to a string representing the device
+  @post   : sets the private member variable to the value of the parameter
+**/
+void Manual::setDevice(const std::string& model)
+{
+  device_ = model;
+}
 
-    /**
-    @param  : a boolean
-    @post   : sets the private member variable indicating the presence 
+/**
+  @param  : a boolean
+  @post   : sets the private member variable indicating the presence 
             of a visual aid to the value of the parameter
-    **/
-    bool hasVisualAid() const;
+**/
+void Manual::setVisualAid(const bool& aid)
+{
+  has_visual_aid_ = aid;
+}
 
-     /**
-    @return  : the has website flag
-    **/
-    bool hasWebsite() const; 
+/**
+  @post     : displays Manual data in the form:
+  "[title_] is written by [author_] company for device: [device_]. Website: [website_ / Broken Link / NONE]. Page Count: [page_count_]. [It is / It is not] available digitally.\n"  
+**/
+void Manual::display()
+{
+  std::string website = "NONE";
+  if (has_website_){
+    website = getWebsite();
+  }
+  
+  std::cout << getTitle() << " is written by " << getAuthor() << " company for device: " <<  device_ << ". Website: " << website << ". Page Count: " << getPageCount() << ". " << (isDigital() ? "It is" : "It is not") << " available digitally.\n";
+}
 
-
-  /**
-		@post     : displays Manual data in the form:
-    "[title_] is written by [author] company for device: [device]. Website: [website / NONE]. Page Count: [page_count_]. [It is / It is not] available digitally. \n"     
-	*/
-  virtual void display() override;
-
-
-  /**
-	@param	  : a reference to a string key to match the device of the Manual
-	@post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
-	*/
-  virtual void displayFilter(const std::string& key) override;
-
-
-
-  private:
-    std::string website_; // a string that represents a url
-    std::string device_; // a string that represents the name of the device
-    bool has_visual_aid_; // a boolean indicating whether the Manual has a visual aid
-    bool has_website_; // a boolean indicating whether the Manual has a website
-};
-// end Manual class
-#endif
+/**
+  @param    : a reference to a string key to match the device of the Manual
+  @post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
+*/
+void Manual::displayFilter(const std::string& key)
+{
+  if (key == device_.substr(0, device_.find("-")))
+  {
+    display();
+  }
+}
