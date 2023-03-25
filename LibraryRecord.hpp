@@ -1,112 +1,118 @@
-#ifndef LIBRARY_RECORD_HPP_
-#define LIBRARY_RECORD_HPP_
+#ifndef LIBRARY_RECORD_
+#define LIBRARY_RECORD_
 
 #include "ArrayBag.hpp"
 #include "Book.hpp"
-
+#include "Novel.hpp"
+#include "Manual.hpp"
+#include "Textbook.hpp"
+#include <vector>
+#include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
 
-class LibraryRecord : public ArrayBag<Book*> {
-    private:
-        std::vector<Book*> checked_out_books_; // A vector containing a copy of all the Books that have been checked out.
-        
-    public:
-        /** default constructor**/
-        LibraryRecord();
+class LibraryRecord : public ArrayBag<Book>{
+  public:
+    LibraryRecord(); //default constructor
 
-        /**
-         * @param:  A refrence to a file name (string)
-         * @post:   will read the input file, where each line corresponds to a Book subclass and dynamically allocate Book-derived
-         *          objects with the information read from the input file and add them to the LibraryRecord.
-         * @note:   Input data will be in the following format:
-         *          title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
-        */
-        LibraryRecord(const std::string& input_file);
+    /** Parameterized constructor that reads in file*/
+    LibraryRecord(const std::string fileName);
 
-        /** 
-         * @param:   A reference to a Book object to be checked in
-         * @return:  returns true if a book was successfully added to items_, false otherwise
-         * @post:    adds book to items_.
-         **/
-        bool checkIn(Book* new_book);
+    /** @param:   A reference to a Book object to be checked in
+      @return:  returns true if a book was successfully added to items, false otherwise
+      @post:    adds book to items.
+    **/
+	  bool checkIn(Book* new_entry);
+    
+    /** @param:   A reference to a Book object to be checked out   
+        @return:  returns true if a book was successfully removed from items_, false otherwise
+        @post:    removes the book from the LibraryRecord and if remove was successful, it adds the book to the check_out_history_ vector.
+    **/
+	  bool checkOut(Book* an_entry);
 
-        /** 
-         * @param:   A reference to a Book object to be checked out   
-         * @return:  returns true if a book was successfully removed from items_, false otherwise
-         * @post:    removes the book from the LibraryRecord and if remove was successful, it adds the book to the vector of checked-out books.
-         */
-        bool checkOut(Book* a_book);
+    /**
+      @param:   A reference to a Book object 
+      @return:  The number of times (int) the referenced Book has been checked out
+    */
+    int getCheckOutHistory(Book* an_entry);
 
-        /**
-         * @param:   A reference to a Book object
-         * @return:  The number of times (int) the referenced Book has been checked out
-         */
-        int getCheckOutHistory(Book* a_book) const;
+    /**
+      @return item_count_ : the current size of the bag
+    **/
 
-        /**
-         * @post:   Outputs the names of the Books in the LibraryRecord and the number of times each Book has been cheked out
-         *          For each Book in the LibraryRecord you will output:
-         *          "[title_] is written by [author_]. Page Count: [page_count_]. [It is / It is not] available digitally.\n
-         *          It has been checked out [_] times.\n"
-         */
-        void display() const;
+    
+    std::vector<Book*> toVector();
 
-        /**
-         * @post:    Prints the title of each Book in the LibraryRecord
-         * Example: "title1, title2, title3, title4!\n" Note the commas and exclamation mark.
-         */
-        void displayTitles() const;
+    /**
+    @post:    Outputs the names of the Books in the LibraryRecord and the number of times each Book has been checked out
 
-        /**
-         * @param:  refrence to a key (string)
-         * @post:   displays information of its holdings whenever they key matches the relevant 
-         *          information (specific to the type of book).
-        */
-        void displayFilter(const std::string& key);
+        For each Book in the LibraryRecord you will output:
+        [title_] is written by [author_]. Page Count: [page_count_]. [it is / is not] available digitally.\n
+        It has been checked out [_] times.
+    **/
+    void display();
 
-        /**
-         * @return:    Returns true if the LibraryRecord was successfully duplicated, false otherwise (there is nothing to duplicate or duplicating would exceed DEFAULT_CAPACITY).
-         * @post:      Duplicates all the items in the LibraryRecord
-         * Example: we originally have [book1, book2] and after duplication we have [book1, book2, book1, book2]
-        */
-        bool duplicateStock();
+    /**
+      @post:    Prints the title of each Book in the LibraryRecord
+      Example:
+      "title1, title2, title3, title4!" Note the commas and exclamation mark.
+    */  
+    void displayTitles();
 
-        /**
-         * @param:   A reference to a book
-         * @return: True if at least one copy of the referenced book was removed from items_, false otherwise 
-         * @post: remove all occurrences of the referenced book
-        */
-        bool removeStock(Book* a_book);
+    /**
+      @return:    Returns true if the LibraryRecord was successfully duplicated, false otherwise (there is nothing to duplicate or duplicating would exceed DEFAULT_CAPACITY).
+      @post:      Duplicates all the items in the LibraryRecord
+      Example: we originally have [book1, book2] and after duplication we have [book1, book2, book1, book2]
+    */
+    bool duplicateStock();
 
-        /**
-         * @param:   A reference to another LibraryRecord
-         * @return:  Returns true if the 2 library records have the same contents (including the same number of duplicates for each book), regardless of their order. For example, 
-         *           if the current holdings of the LibraryRecord are [book1, book2, book3]
-         *           and those of the referenced LibraryRecord are [book3, book1, book2], it will return true.
-         *           However, [book1, book2, book2, book3] is not equivalent to [book1, book2, book3, book3], because it contains two copies of book2 and only one copy of book3
-         */
-        bool equivalentRecords(const LibraryRecord& new_library) const;
+    /**
+      @param:   A reference to a book
+      @return: True or false depending on whether or not an item was removed
+      @post: remove all elements of that book
+    */
+    bool removeStock(Book* an_entry) ;
 
-        /**
-         * @param:   A reference to another LibraryRecord object
-         * @post:    Combines the contents from both LibraryRecord objects, including duplicates.
-         * Example: [book1, book2, book3] += [book1, book4] will produce [book1, book2, book3, book1, book4]
-         * IMPORTANT: We are carrying over the number of times a book has been checked out. For example, if we have LibraryRecord1 += LibraryRecord2 and
-         * book4 is in LibraryRecord2 and has been checked out 2 times, then it should still be checked out 2 times in LibraryRecord1 after the += operation
-         * Hint: use getCheckOutHistory and the checkout history vector
-         */
-        LibraryRecord& operator+= (const LibraryRecord& new_library);
+    /**
+      @param:   A reference to another LibraryRecord
+      @return:  Returns true if the 2 library records have the contents, regardless of their order. For example, if the current holdings of the LibraryRecord are [book1, book2, book3]
+      and those of the referenced LibraryRecord are [book3, book1, book2], it will return true
+    */
+    bool equivalentRecords(LibraryRecord& a_library_record);
 
-        /**
-         * @param:   A reference to another LibraryRecord object
-         * @post:    Combines the contents from both LibraryRecord objects, EXCLUDING duplicates.
-         * Example: [book1, book2, book3] /= [book1, book4] will produce [book1, book2, book3, book4]
-         * IMPORTANT: We are carrying over the nunber of times a book has been checked out. For example, if we have LibraryRecord1 /= LibraryRecord2 and
-         * book4 is in LibraryRecord2 and has been checked out 2 times, then it should still be checked out 2 times in LibraryRecord1 after the /= operation
-         * Hint: use getCheckOutHistory and the checkout history vector
-        */
-        LibraryRecord& operator/= (const LibraryRecord& new_library);        
+    /** @param:   A reference to another ArrayBag object
+      @post:    Combines the contents from both ArrayBag objects, EXCLUDING duplicates.
+      Example: [book1, book2, book3] /= [book1, book4] will produce [book1, book2, book3, book4]
 
+      IMPORTANT: We are carrying over the amount of times a book has been checked out.
+      If book4 is in LibraryRecord2 and has been checked out 2 times then it should still be checked out 2 times in LibraryRecord2
+      Hint: use getCheckOutHistory and your checkOutHistory_ vector
+    */
+    void operator/=(LibraryRecord& a_library_record);
+
+    /**
+        @param:   A reference to another LibraryRecord object
+        @post:    Combines the contents from both LibraryRecord objects, including duplicates.
+        Example: [book1, book2, book3] += [book1, book4] will produce [book1, book2, book3, book1, book4]
+
+        IMPORTANT: We are carrying over the amount of times a book has been checked out.
+        If book4 is in LibraryRecord2 and has been checked out 2 times then it should still be checked out 2 times in LibraryRecord2
+        Hint: use getCheckOutHistory and your checkOutHistory_ vector
+    */
+    void operator+=(LibraryRecord& a_library_record);
+
+    /**
+        @param    : a reference to a string key to match the book type
+        @post     : calls display() for the specific book type   
+    */
+   void displayFilter(const std::string &key);
+
+
+  protected:
+   
+    std::vector<Book*> check_out_history_; //a list of all the items that have been checked out
+
+ 
 };
-
 #endif
