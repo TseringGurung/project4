@@ -13,7 +13,7 @@ enum grade_level
   COLLEGE
 };
 
-
+grade_level stringGrade(const std::string& input);
 
 class Textbook : public Book
 {
@@ -81,13 +81,13 @@ class Textbook : public Book
     Example:
     Calculus: Early Transcendentals written by James Stewart for COLLEGE students. Subject: mathematics. It has review questions. Page Count: 867. It is available digitally.
     */ 
-    void display() const;
+    void display() override;
 
     /**
     @param    : a reference to a string key to match the subject of the Textbook
     @post     : calls display() if the key argument is equal to subject_ (e.g. "mathematics")   
     */
-    void displayFilter(const std::string& textbook_subject_key) const;
+    void displayFilter(const std::string& textbook_subject_key) override;
 
   private:
     std::string subject_; // a string the represents the subject of the book
