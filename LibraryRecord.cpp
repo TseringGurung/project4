@@ -11,12 +11,50 @@ LibraryRecord::LibraryRecord() : ArrayBag<Book*>()
 /* parameterized constructor
 Implement a parameterized constructor that takes the name of the input file as a reference to string argument. 
 The constructor will read the input file, where each line corresponds to a Book subclass and 
-dynamically allocate Book-derived objects with the information read from the input file and add them to the LibraryRecord. */
+dynamically allocate Book-derived objects with the information read from the input file and add them to the LibraryRecord.
+  Each line in the input file has the following format:
+  title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
+The 3 class types are listed as book_type and are:
+Novel (represented by 1)
+Textbook (represented by 2)
+Manual (represented by 3)
+
+*/
 LibraryRecord::LibraryRecord(const std::string& input_file){
-  
+  std::string type, title_file, author_file, page_count_file, is_digital_file, genre_file, subject_file, grade_level_file, has_film_file, has_review_file, device_model_file, website_file, book_type_file;
+  std::ifstream book_file(input_file);
+  if(!book_file.is_open()){
+    std::cout << "Error\n";
+  }
+  std::getline(book_file, type, '\n');
+  while(book_file.good()){
+    std::getline(book_file, title_file, ',');
+    std::getline(book_file, author_file, ',');
+    std::getline(book_file, page_count_file, ',');
+    std::getline(book_file, is_digital_file, ',');
+    std::getline(book_file, genre_file, ',');
+    std::getline(book_file, subject_file, ',');
+    std::getline(book_file, grade_level_file, ',');
+    std::getline(book_file, has_film_file, ',');
+    std::getline(book_file, has_review_file, ',');
+    std::getline(book_file, device_model_file, ',');
+    std::getline(book_file, website_file, ',');
+    std::getline(book_file, book_type_file, ',');
+
+    if(book_type_file == "1"){
+      Novel* novel_ = new Novel(title_file, author_file, std::stoi(page_count_file), genre_file, std::stoi(is_digital_file),std::stoi(has_film_file));
+      add(novel_);
+    }
+    if(book_type_file == "2"){
+      Textbook* textbook_ = new Textbook(title_file, author_file, std::stoi(page_count_file), std::stoi(is_digital_file), subject_file, stringGrade(grade_level_file), std::stoi(has_review_file));
+      add(textbook_);
+    }
+    if(book_type_file == "3"){
+      Manual* manual_ = new Manual(title_file, author_file, std::stoi(page_count_file), std::stoi(is_digital_file), device_model_file, website_file);
+      add(manual_);
+    }
+  }
 }
-
-
 
 
 
@@ -143,8 +181,6 @@ void LibraryRecord::operator/=(LibraryRecord& a_library_record)
     itemsToAdd--;
   }
 }
-
-
 
 
  /**
