@@ -156,7 +156,7 @@ void Manual::display(){
   @post     : calls display() if the key argument is equal to device_ (e.g. "Oven")   
 */
 void Manual::displayFilter(const std::string& Manual_device_key){
-    if(Manual_device_key == device_.substr(0,device_.find('-'))){
+    if(Manual_device_key == device_.substr(0,device_.find("-"))){
       display();
     }
 }
