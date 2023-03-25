@@ -107,7 +107,7 @@ class Book{
   	@param:  A reference to a string key
     @post:   Display book data if key argument matches (key match will be subclass specific) 
   	*/
-  	virtual void displayFilter(const std::string& key) = 0;
+  	virtual void displayFilter(const std::string &key) = 0;
 
 	private:
 	std::string title_; // The title of the book (a string)
