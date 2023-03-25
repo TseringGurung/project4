@@ -162,7 +162,7 @@ Example:
 Enders Game is written by Orson Scott Card. Genre: science fiction. It has a film adaptation. Page Count: 324. It is not available digitally.      
 */
 
-void Novel::display() const{
+void Novel::display(){
   
   std::cout << getTitle() << " is written by " << getAuthor() << ". Genre: " << genre_ << ". ";
   if(has_film_adaptation_){
@@ -186,8 +186,8 @@ void Novel::display() const{
   @param    : a reference to a string key to match the genre of the Novel
 @post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
 */
-void Novel::diplayFilter(const std::string& genre_novel_key) const{
-  if(genre_novel_key == genre_){
+void Novel::diplayFilter(const std::string& genre_novel_key){
+  if(genre_novel_key == getGenre()){
     display();
   }
 }
