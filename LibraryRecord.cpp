@@ -4,7 +4,7 @@
 #include "Novel.hpp"
 
 /** default constructor**/
-LibraryRecord::LibraryRecord() : ArrayBag<Book*>()
+LibraryRecord::LibraryRecord() : ArrayBag<Book>()
 {
 }
 
@@ -20,7 +20,7 @@ Textbook (represented by 2)
 Manual (represented by 3)
 
 */
-LibraryRecord::LibraryRecord(const std::string& input_file){
+LibraryRecord::LibraryRecord(const std::string input_file){
   std::string type, title_file, author_file, page_count_file, is_digital_file, genre_file, subject_file, grade_level_file, has_film_file, has_review_file, device_model_file, website_file, book_type_file;
   std::ifstream book_file(input_file);
   if(!book_file.is_open()){
@@ -64,9 +64,14 @@ LibraryRecord::LibraryRecord(const std::string& input_file){
  **/
 bool LibraryRecord::checkIn(Book* new_entry)
 {
-  if(add(new_entry)){
+  bool has_room = (item_count_ < DEFAULT_CAPACITY);
+  if (has_room)
+  {
+    items_[item_count_] = new_entry;
+    item_count_++;
     return true;
-  }
+  } // end if
+
   return false;
 }
 
@@ -76,11 +81,16 @@ bool LibraryRecord::checkIn(Book* new_entry)
  **/
 bool LibraryRecord::checkOut(Book* an_entry)
 {
-  if(remove(an_entry)) {
-      check_out_history_.push_back(an_entry);
-      return true;
+  int found_index = getIndexOf(an_entry);
+  bool can_remove = !isEmpty() && (found_index > -1);
+  if (can_remove)
+  {
+    item_count_--;
+    items_[found_index] = items_[item_count_];
+    check_out_history_.push_back(an_entry);
   }
-  return false;
+
+  return can_remove;
 }
 
 /**
@@ -103,11 +113,13 @@ void LibraryRecord::display()
 /*Implement LibraryRecord::displayFilter that takes a reference to string key and displays information of its holdings
  whenever they key matches the relevant information (specific to the type of book).*/
 
-void LibraryRecord::dispalyFilter(const std::string &key){
-  for(int i = 0; i < item_count_; i++){
-    items_[i]->displayFilter(key);
+void LibraryRecord::displayFilter(const std::string &key){
+  for (int i = 0; i < item_count_; i++)
+  {
+    Book* book = items_[i];
+    book->displayFilter(key);
   }
-} 
+}
 
 /**
   @post:    Prints the title of each Book in the LibraryRecord
@@ -259,8 +271,18 @@ bool LibraryRecord::duplicateStock()
 */
 bool LibraryRecord::removeStock(Book* an_entry)
 {
-  while(remove(an_entry));
-  return true;
+  bool res = false;
+  while (contains(an_entry))
+  {
+    int found_index = getIndexOf(an_entry);
+    item_count_--;
+    for (int i = found_index; i < item_count_; i++)
+    {
+      items_[i] = items_[i + 1];
+    }
+    res = true;
+  }
+  return res;
 }
 
 /**
