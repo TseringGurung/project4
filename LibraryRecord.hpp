@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 
-class LibraryRecord : public ArrayBag<Book>{
+class LibraryRecord : public ArrayBag<Book*>{
   public:
     LibraryRecord(); //default constructor
 
@@ -18,7 +18,7 @@ class LibraryRecord : public ArrayBag<Book>{
          * @note:   Input data will be in the following format:
          *          title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
         */
-    LibraryRecord(const std::string input_file);
+    LibraryRecord(const std::string& input_file);
 
     /** @param:   A reference to a Book object to be checked in
       @return:  returns true if a book was successfully added to items, false otherwise
