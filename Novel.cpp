@@ -1,4 +1,3 @@
-
 #include "Novel.hpp"
 
 /**
@@ -7,7 +6,7 @@
   Booleans are default-initialized to False
 */
 Novel::Novel()
-    : genre_{""}, average_rating_{0.0}, has_film_adaptation_{false} {}
+    : genre_{""}, avg_rating_{0.0}, has_film_{false} {}
 
 /**
   Parameterized constructor.
@@ -24,8 +23,8 @@ Novel::Novel(std::string name, std::string author, int page_count,
              std::string genre, bool is_digital, bool has_adaptation)
     : Book(name, author, page_count, is_digital),
       genre_{genre},
-      average_rating_{0.0},
-      has_film_adaptation_{has_adaptation} {}
+      avg_rating_{0.0},
+      has_film_{has_adaptation} {}
 
 /**
   @return   : the value of the genre private member
@@ -43,7 +42,7 @@ void Novel::setGenre(const std::string& genre) { genre_ = genre; }
   @return   : the vector containing the list of characters for this novel
 **/
 std::vector<std::string> Novel::getCharacterList() const {
-  return character_list_;
+  return characters_;
 }
 
 /**
@@ -54,8 +53,8 @@ std::vector<std::string> Novel::getCharacterList() const {
 **/
 std::string Novel::getCharacterListString() {
   std::string characters = "";
-  for (int i = 0; i < character_list_.size(); i++) {
-    characters += character_list_[i];
+  for (int i = 0; i < characters.size(); i++) {
+    characters += characters[i];
     characters += " ";
   }
 
@@ -68,23 +67,23 @@ std::string Novel::getCharacterListString() {
   @post   : inserts the character into the character_list_ vector
 **/
 void Novel::addCharacter(const std::string& character) {
-  character_list_.push_back(character);
+  characters_.push_back(character);
 }
 
 /**
   @return   : the value of the film_adaptation private member
 **/
-bool Novel::hasFilmAdaptation() const { return has_film_adaptation_; }
+bool Novel::hasFilmAdaptation() const { return has_film_; }
 
 /**
   @post   : sets has_film_adaptation_ private member to true
 **/
-void Novel::setFilmAdaptation() { has_film_adaptation_ = true; }
+void Novel::setFilmAdaptation() { has_film_ = true; }
 
 /**
   @return   : the value of the average rating private member
 **/
-double Novel::getAverageRating() const { return average_rating_; }
+double Novel::getAverageRating() const { return avg_rating_; }
 
 /**
   @param    : a floating point number (double) indicating
