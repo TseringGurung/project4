@@ -2,81 +2,64 @@
 //3/24/23
 //LibraryRecord.cpp
 //Project 4: Polymorphism
-
 #include "LibraryRecord.hpp"
-
+#include "Textbook.hpp"
+#include "Manual.hpp"
+#include "Novel.hpp"
 
 /** default constructor**/
-LibraryRecord::LibraryRecord() : ArrayBag<Book>()
-{
-}
+LibraryRecord::LibraryRecord() : ArrayBag<Book*>() {}
 
-/** Parameterized constructor that reads in file*/ 
-LibraryRecord::LibraryRecord(const std::string fileName){
-  std::ifstream file_(fileName);
-  std::string line;
-  std::getline(file_, line);
-  std::string title, author, page_count, digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type;
+/* parameterized constructor
+Implement a parameterized constructor that takes the name of the input file as a reference to string argument. 
+The constructor will read the input file, where each line corresponds to a Book subclass and 
+dynamically allocate Book-derived objects with the information read from the input file and add them to the LibraryRecord.
+  Each line in the input file has the following format:
+  title, author, page_count, is_digital, genre, subject, grade_level, has_film_adaptation, has_review_questions, device_model, website, book_type
+The 3 class types are listed as book_type and are:
+Novel (represented by 1)
+Textbook (represented by 2)
+Manual (represented by 3)
 
-  while(std::getline(file_, line)){
-    std::stringstream ss(line);
-    std::getline(ss, title, ',');
-    std::getline(ss, author, ',');
-    std::getline(ss, page_count, ',');
-    std::getline(ss, digital, ',');
-    std::getline(ss, genre, ',');
-    std::getline(ss, subject, ',');
-    std::getline(ss, grade_level, ',');
-    std::getline(ss, has_film_adaptation, ',');
-    std::getline(ss, has_review_questions, ',');
-    std::getline(ss, device_model, ',');
-    std::getline(ss, website, ',');
-    std::getline(ss, book_type);
+*/
+LibraryRecord::LibraryRecord(const std::string& input_file){
+  item_count_ = 0;
+  std::string type, title_file, author_file, page_count_file, is_digital_file, genre_file, subject_file, grade_level_file, has_film_file, has_review_file, device_model_file, website_file, book_type_file;
+  std::ifstream book_file(input_file);
+  if(!book_file.is_open()){
+    std::cout << "Error\n";
+  }
+  std::getline(book_file, type, '\n');
+  while(book_file.good()){
+    std::getline(book_file, title_file, ',');
+    std::getline(book_file, author_file, ',');
+    std::getline(book_file, page_count_file, ',');
+    std::getline(book_file, is_digital_file, ',');
+    std::getline(book_file, genre_file, ',');
+    std::getline(book_file, subject_file, ',');
+    std::getline(book_file, grade_level_file, ',');
+    std::getline(book_file, has_film_file, ',');
+    std::getline(book_file, has_review_file, ',');
+    std::getline(book_file, device_model_file, ',');
+    std::getline(book_file, website_file, ',');
+    std::getline(book_file, book_type_file, ',');
 
-    bool digital_ = std::stoi(digital);
-    bool hasFilm_ = std::stoi(has_film_adaptation);
-    bool hasReview_ = std::stoi(has_review_questions);
-    
-
-    // Book* book = nullptr;
-    if(std::stoi(book_type) == 1){
-      Novel* novel = new Novel(title, author, std::stoi(page_count), genre, digital_, hasFilm_);
-      checkIn(novel);
+    if(book_type_file == "1"){
+      Novel* novel_ = new Novel(title_file, author_file, std::stoi(page_count_file), genre_file, std::stoi(is_digital_file),std::stoi(has_film_file));
+      add(novel_);
     }
-    else if(std::stoi(book_type) == 2){
-      Textbook* textbook; 
-      if(grade_level == "NONE"){
-        textbook = new Textbook(title, author, std::stoi(page_count), subject, digital_, NONE, hasReview_);
-      }
-      else if(grade_level == "ELEMENTARY"){
-        textbook = new Textbook(title, author, std::stoi(page_count), subject, digital_, ELEMENTARY, hasReview_);
-      }
-      else if(grade_level == "JUNIOR HIGH"){
-        textbook = new Textbook(title, author, std::stoi(page_count), subject, digital_, JUNIOR_HIGH, hasReview_);
-      }
-      else if (grade_level == "HIGH SCHOOL"){
-        textbook = new Textbook(title, author, std::stoi(page_count), subject, digital_, HIGH_SCHOOL, hasReview_);
-      }
-      else {
-        textbook = new Textbook(title, author, std::stoi(page_count), subject, digital_, COLLEGE, hasReview_);
-      }
-      checkIn(textbook);
+    if(book_type_file == "2"){
+      Textbook* textbook_ = new Textbook(title_file, author_file, std::stoi(page_count_file), subject_file, std::stoi(is_digital_file), stringGrade(grade_level_file), std::stoi(has_review_file));
+      add(textbook_);
     }
-    else if(std::stoi(book_type) == 3){
-      std::string actual_model;
-      std::stringstream device_extrpolate(device_model);
-      std::getline(device_extrpolate, actual_model, '-');
-      Manual* manual_ptr = new Manual(title, author, std::stoi(page_count), actual_model, digital_);
-      
-      if(website != "NONE"){
-        manual_ptr->setWebsite(website);
-      }
-
-      checkIn(manual_ptr);
+    if(book_type_file == "3"){
+      Manual* manual_ = new Manual(title_file, author_file, std::stoi(page_count_file), device_model_file, std::stoi(is_digital_file), website_file);
+      add(manual_);
     }
-
   }
 }
+
+
 
 /** @param:   A reference to a Book object to be checked in
     @return:  returns true if a book was successfully added to items, false otherwise
@@ -84,15 +67,7 @@ LibraryRecord::LibraryRecord(const std::string fileName){
  **/
 bool LibraryRecord::checkIn(Book* new_entry)
 {
-  bool has_room = (item_count_ < DEFAULT_CAPACITY);
-  if (has_room)
-  {
-    items_[item_count_] = new_entry;
-    item_count_++;
-    return true;
-  } // end if
-
-  return false;
+  return add(new_entry);
 }
 
 /** @param:   A reference to a Book object to be checked out   
@@ -101,16 +76,11 @@ bool LibraryRecord::checkIn(Book* new_entry)
  **/
 bool LibraryRecord::checkOut(Book* an_entry)
 {
-  int found_index = getIndexOf(an_entry);
-  bool can_remove = !isEmpty() && (found_index > -1);
-  if (can_remove)
-  {
-    item_count_--;
-    items_[found_index] = items_[item_count_];
-    check_out_history_.push_back(an_entry);
-  }
-
-  return can_remove;
+  if(remove(an_entry)) {
+        check_out_history_.push_back(an_entry);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -129,6 +99,18 @@ void LibraryRecord::display()
     std::cout << "It has been checked out " << count << " times." << std::endl;
   }
 }
+
+/*Implement LibraryRecord::displayFilter that takes a reference to string key and displays information of its holdings
+ whenever they key matches the relevant information (specific to the type of book).*/
+
+void LibraryRecord::displayFilter(const std::string &key){
+  for (int i = 0; i < item_count_; i++)
+  {
+    Book* book = items_[i];
+    book->displayFilter(key);
+  }
+}
+
 
 /**
   @post:    Prints the title of each Book in the LibraryRecord
@@ -202,8 +184,6 @@ void LibraryRecord::operator/=(LibraryRecord& a_library_record)
     itemsToAdd--;
   }
 }
-
-
 
 
  /**
@@ -342,16 +322,4 @@ bool LibraryRecord::equivalentRecords(LibraryRecord& a_library_record)
     }
   }
   return result;
-}
-
-/**
-  @param    : a reference to a string key to match the book type
-  @post     : calls display() for the specific book type   
-*/
-void LibraryRecord::displayFilter(const std::string &key){
-  for (int i = 0; i < item_count_; i++)
-  {
-    Book* book = items_[i];
-    book->displayFilter(key);
-  }
 }
