@@ -5,6 +5,7 @@
 #include "Book.hpp"
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 class LibraryRecord : public ArrayBag<Book*>{
   public:
