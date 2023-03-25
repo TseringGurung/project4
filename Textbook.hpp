@@ -1,3 +1,6 @@
+//Tsering Gurung
+//CS 235
+//Project 4: Polymorphism
 #ifndef TEXTBOOK_HPP_
 #define TEXTBOOK_HPP_
 
