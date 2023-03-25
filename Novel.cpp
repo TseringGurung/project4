@@ -7,7 +7,7 @@
 
 
 /**
-  Default constructor. 
+  Default constructor.
   Default-initializes all private members. 
   Booleans are default-initialized to False
 */
@@ -29,6 +29,7 @@ Novel::Novel(): genre_{""}, average_rating_{0.0}, has_film_adaptation_{false}
 Novel::Novel(std::string name, std::string author, int page_count, std::string genre, bool is_digital, bool has_adaptation): 
              Book(name, author, page_count, is_digital), 
              genre_{genre}, average_rating_{0.0}, has_film_adaptation_{has_adaptation}
+             
 {
 }
 
@@ -160,19 +161,37 @@ void Novel::calculateAverageRating()
 
 /**
   @post     : displays Novel data in the form:
-  "[title_] is written by [author_]. Genre: [genre_]. [It has/ It does not have] a film adaptation. Page Count: [page_count_]. [It is / It is not] available digitally.\n"     
+"[title_] is written by [author_]. Genre: [genre]. [It has/ It does not have] a film adaptation. Page Count: [page_count_]. [It is / It is not] available digitally.\n"
+Example:
+Enders Game is written by Orson Scott Card. Genre: science fiction. It has a film adaptation. Page Count: 324. It is not available digitally.      
 */
+
 void Novel::display(){
-    std::cout << getTitle() << " is written by " << getAuthor() << ". Genre: " << getGenre() << ". " << (hasFilmAdaptation() ? "It has" : "It does not have") << " a film adaptation. Page Count: " << getPageCount() << ". " << (isDigital() ? "It is" : "It is not") << " available digitally.\n";
+  
+  std::cout << getTitle() << " is written by " << getAuthor() << ". Genre: " << getGenre() << ". ";
+  if(hasFilmAdaptation()){
+    std::cout << "It has";
+  }
+  else{
+    std::cout << "It does not have";
+  }
+  std::cout << " a film adaptation. Page Count: " << getPageCount() << ". ";
+  if(isDigital()){
+    std::cout << "It is";
+  }
+  else{
+    std::cout << "It is not";
+  }
+  std::cout << " available digitally.\n";
+
 }
 
 /**
   @param    : a reference to a string key to match the genre of the Novel
-  @post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
+@post     : calls display() if the key argument is equal to genre_ (e.g. "horror")   
 */
-void Novel::displayFilter(const std::string &key){
-    if(key == getGenre()){
-        display();
-    }
+void Novel::displayFilter(const std::string& genre_novel_key){
+  if(genre_novel_key == getGenre()){
+    display();
+  }
 }
-
