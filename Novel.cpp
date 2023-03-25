@@ -164,8 +164,8 @@ Enders Game is written by Orson Scott Card. Genre: science fiction. It has a fil
 
 void Novel::display(){
   
-  std::cout << getTitle() << " is written by " << getAuthor() << ". Genre: " << genre_ << ". ";
-  if(has_film_adaptation_){
+  std::cout << getTitle() << " is written by " << getAuthor() << ". Genre: " << getGenre() << ". ";
+  if(hasFilmAdaptation()){
     std::cout << "It has";
   }
   else{
