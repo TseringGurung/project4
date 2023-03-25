@@ -151,6 +151,3 @@ void Textbook::displayFilter(const std::string& textbook_subject_key){
     display();
   }
 }
-
-
-
